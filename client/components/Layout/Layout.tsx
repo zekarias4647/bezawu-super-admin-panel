@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ onLogout, theme, mode, onModeToggle }) 
           return;
         }
 
-        const response = await axios.get('http://localhost:5001/api/auth/me', {
+        const response = await axios.get('http://superadminapi.ristestate.com/api/auth/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }

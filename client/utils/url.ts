@@ -9,5 +9,5 @@ export const getImageUrl = (path: string | null | undefined): string => {
     // If the path already includes 'uploads/', don't double it
     const finalPath = cleanPath.includes('uploads/') ? cleanPath : `uploads/${cleanPath}`;
 
-    return `http://localhost:5002/${finalPath}`;
+    return `https://onboardingapi.ristestate.com/${finalPath}`;
 };

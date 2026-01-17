@@ -63,7 +63,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('authToken');
-      const response = await axios.get('http://localhost:5001/api/branches', {
+      const response = await axios.get('http://superadminapi.ristestate.com/api/branches', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -83,7 +83,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
   const fetchBranchProducts = async (branchId: string) => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.get(`http://localhost:5001/api/branches/${branchId}/products`, {
+      const response = await axios.get(`http://superadminapi.ristestate.com/api/branches/${branchId}/products`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -104,7 +104,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
   const toggleBusyMode = async (id: string, currentBusy: boolean) => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.patch(`http://localhost:5001/api/branches/${id}/busy`,
+      const response = await axios.patch(`http://superadminapi.ristestate.com/api/branches/${id}/busy`,
         { is_busy: !currentBusy },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -123,7 +123,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
     try {
       const newStatus = currentStatus.toUpperCase() === 'ACTIVE' ? 'CLOSED' : 'ACTIVE';
       const token = localStorage.getItem('authToken');
-      const response = await axios.patch(`http://localhost:5001/api/branches/${id}/status`,
+      const response = await axios.patch(`http://superadminapi.ristestate.com/api/branches/${id}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -276,29 +276,43 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
                   <h4 className={`text-[9px] font-black uppercase tracking-[0.5em] ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Node Authority</h4>
                 </div>
                 <div className={`p-8 rounded-[2.5rem] border ${isDark ? 'bg-white/[0.02] border-white/10' : 'bg-white/40 border-black/5 shadow-lg'}`}>
-                  <div className="flex items-center gap-5 mb-8">
-                    <div className={`w-16 h-16 rounded-3xl flex items-center justify-center text-2xl font-black ${isDark ? 'bg-blue-500/10 text-blue-400' : 'bg-gray-950 text-white shadow-xl'}`}>
-                      {selectedBranch.manager.name.charAt(0)}
+                  {selectedBranch.manager ? (
+                    <>
+                      <div className="flex items-center gap-5 mb-8">
+                        <div className={`w-16 h-16 rounded-3xl flex items-center justify-center text-2xl font-black ${isDark ? 'bg-blue-500/10 text-blue-400' : 'bg-gray-950 text-white shadow-xl'}`}>
+                          {selectedBranch.manager.name.charAt(0)}
+                        </div>
+                        <div>
+                          <p className={`text-lg font-black tracking-tight ${isDark ? 'text-white' : 'text-gray-950'}`}>{selectedBranch.manager.name}</p>
+                          <p className={`text-[9px] font-bold uppercase tracking-widest text-blue-500`}>{selectedBranch.manager.role}</p>
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between text-[11px] font-bold">
+                          <span className={isDark ? 'text-white/20' : 'text-gray-400'}>Protocol Email</span>
+                          <span className={isDark ? 'text-white/80' : 'text-gray-950'}>{selectedBranch.manager.email}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-[11px] font-bold">
+                          <span className={isDark ? 'text-white/20' : 'text-gray-400'}>Secure Line</span>
+                          <span className={isDark ? 'text-white/80' : 'text-gray-950'}>{selectedBranch.manager.phone}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-[11px] font-bold">
+                          <span className={isDark ? 'text-white/20' : 'text-gray-400'}>Auth State</span>
+                          <span className="text-emerald-500 uppercase tracking-widest">{selectedBranch.manager.status}</span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-8 text-center space-y-4">
+                      <div className={`w-16 h-16 rounded-full flex items-center justify-center ${isDark ? 'bg-white/5 text-white/20' : 'bg-gray-100 text-gray-400'}`}>
+                        <User size={24} />
+                      </div>
+                      <div>
+                        <p className={`text-sm font-bold ${isDark ? 'text-white/40' : 'text-gray-500'}`}>No Manager Assigned</p>
+                        <p className={`text-[9px] uppercase tracking-widest mt-1 ${isDark ? 'text-white/20' : 'text-gray-400'}`}>Node Operating Autonomously</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className={`text-lg font-black tracking-tight ${isDark ? 'text-white' : 'text-gray-950'}`}>{selectedBranch.manager.name}</p>
-                      <p className={`text-[9px] font-bold uppercase tracking-widest text-blue-500`}>{selectedBranch.manager.role}</p>
-                    </div>
-                  </div>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between text-[11px] font-bold">
-                      <span className={isDark ? 'text-white/20' : 'text-gray-400'}>Protocol Email</span>
-                      <span className={isDark ? 'text-white/80' : 'text-gray-950'}>{selectedBranch.manager.email}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-[11px] font-bold">
-                      <span className={isDark ? 'text-white/20' : 'text-gray-400'}>Secure Line</span>
-                      <span className={isDark ? 'text-white/80' : 'text-gray-950'}>{selectedBranch.manager.phone}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-[11px] font-bold">
-                      <span className={isDark ? 'text-white/20' : 'text-gray-400'}>Auth State</span>
-                      <span className="text-emerald-500 uppercase tracking-widest">{selectedBranch.manager.status}</span>
-                    </div>
-                  </div>
+                  )}
                 </div>
               </section>
             </div>

@@ -30,8 +30,8 @@ const Finance: React.FC<{ theme?: 'light' | 'dark' }> = ({ theme = 'dark' }) => 
          const headers = { Authorization: `Bearer ${token}` };
 
          const [statsRes, payoutsRes] = await Promise.all([
-            axios.get('http://localhost:5001/api/finance/stats', { headers }),
-            axios.get('http://localhost:5001/api/finance/payouts', { headers })
+            axios.get('http://superadminapi.ristestate.com/api/finance/stats', { headers }),
+            axios.get('http://superadminapi.ristestate.com/api/finance/payouts', { headers })
          ]);
 
          if (statsRes.data.success) setStats(statsRes.data.data);

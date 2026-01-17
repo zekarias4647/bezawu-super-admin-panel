@@ -31,7 +31,7 @@ const ResetPassword: React.FC<Props> = ({ resetToken, onSuccess }) => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5001/api/auth/reset-password', {
+      const response = await fetch('http://superadminapi.ristestate.com/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

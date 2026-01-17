@@ -10,9 +10,14 @@ router.get('/', authMiddleware, async (req, res) => {
         let sql = `
             SELECT 
                 al.id, al.action, al.severity, al.created_at, 
-                a.full_name as admin_name
+                COALESCE(a.full_name, m.name) as admin_name,
+                s.name as supermarket_name,
+                b.name as branch_name
             FROM audit_logs al
-            LEFT JOIN admins a ON al.admin_id = a.id
+            LEFT JOIN admins a ON al.admin_id::text = a.id::text
+            LEFT JOIN managers m ON al.admin_id::text = m.id::text
+            LEFT JOIN supermarkets s ON al.supermarket_id::text = s.id::text
+            LEFT JOIN branches b ON al.branch_id::text = b.id::text
         `;
         const params = [];
         const conditions = [];
