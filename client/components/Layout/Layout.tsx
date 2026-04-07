@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
-import { LayoutDashboard, Store, MapPin, BarChart3, LogOut, Settings, Bell, Search, Hexagon, Sun, Moon, Users as UsersIcon, MessageSquareQuote, Radar, Wallet, Shield, Palette } from 'lucide-react';
+import { LayoutDashboard, Store, MapPin, BarChart3, LogOut, Settings, Bell, Search, Hexagon, Sun, Moon, Users as UsersIcon, MessageSquareQuote, Radar, Wallet, Shield, Palette, Briefcase, ImageIcon, Smartphone } from 'lucide-react';
 import axios from 'axios';
 
 
@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ onLogout, theme, mode, onModeToggle }) 
           return;
         }
 
-        const response = await axios.get('https://superadminapi.ristestate.com/api/auth/me', {
+        const response = await axios.get('https://superapi.bezawcurbside.com/api/auth/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -60,7 +60,7 @@ const Layout: React.FC<LayoutProps> = ({ onLogout, theme, mode, onModeToggle }) 
 
 
   return (
-    <div className={`flex h-screen relative overflow-hidden transition-all duration-700 bg-[var(--bg-primary)] text-[var(--text-primary)]`}>
+    <div className={`flex h-full relative overflow-hidden transition-all duration-700 bg-[var(--bg-primary)] text-[var(--text-primary)]`}>
       <div className="mesh-blob blob-1"></div>
       <div className="mesh-blob blob-2"></div>
 
@@ -84,8 +84,11 @@ const Layout: React.FC<LayoutProps> = ({ onLogout, theme, mode, onModeToggle }) 
           <SidebarLink to="/branches" icon={<MapPin size={18} />} label="Branches" />
           {/* <SidebarLink to="/network" icon={<Radar size={18} />} label="Network Pulse" /> */}
           <SidebarLink to="/finance" icon={<Wallet size={18} />} label="Finance Hub" />
+          <SidebarLink to="/business-types" icon={<Briefcase size={18} />} label="Business Types" />
+          <SidebarLink to="/ads" icon={<ImageIcon size={18} />} label="App Ads" />
           <SidebarLink to="/users" icon={<UsersIcon size={18} />} label="Users" />
           <SidebarLink to="/feedback" icon={<MessageSquareQuote size={18} />} label="Feedback" />
+          <SidebarLink to="/app-feedback" icon={<Smartphone size={18} />} label="App Feedback" />
           <SidebarLink to="/audit" icon={<Shield size={18} />} label="Audit Ledger" />
           <SidebarLink to="/settings" icon={<Settings size={18} />} label="System Config" />
         </nav>

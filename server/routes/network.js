@@ -8,9 +8,9 @@ router.get('/telemetry', authMiddleware, async (req, res) => {
     try {
         // Fetch all branches as nodes
         const branchesResult = await query(`
-            SELECT b.id, b.name, b.status, b.is_busy, b.latitude, b.longitude, s.name as supermarket_name
+            SELECT b.id, b.name, b.status, b.is_busy, b.latitude, b.longitude, v.name as vendor_name, v.name as supermarket_name
             FROM branches b
-            LEFT JOIN supermarkets s ON b.supermarket_id = s.id
+            LEFT JOIN vendors v ON b.vendor_id = v.id
         `);
 
         // Addis bounds for projection (approximate)
@@ -50,7 +50,7 @@ router.get('/telemetry', authMiddleware, async (req, res) => {
             return {
                 id: branch.id,
                 name: branch.name,
-                supermarket: branch.supermarket_name,
+                supermarket: branch.vendor_name,
                 status,
                 x: Math.round(x),
                 y: Math.round(y)

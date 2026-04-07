@@ -35,3 +35,15 @@ export interface ChartDataPoint {
 }
 
 export type AuthView = 'LOGIN' | 'FORGOT' | 'OTP' | 'RESET';
+
+export interface Ad {
+  id: string;
+  description: string;
+  type: 'video' | 'image';
+  media_url: string;
+  duration_hours: number;
+  is_active: boolean;
+  status_derived: string;
+  expires_at: string;
+  created_at: string;
+}

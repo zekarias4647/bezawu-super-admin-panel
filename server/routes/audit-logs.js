@@ -11,14 +11,18 @@ router.get('/', authMiddleware, async (req, res) => {
             SELECT 
                 al.id, al.action, al.severity, al.created_at, 
                 COALESCE(a.full_name, m.name) as admin_name,
-                s.name as supermarket_name,
+                v.name as vendor_name,
+                v.name as supermarket_name, -- Alias
                 b.name as branch_name
             FROM audit_logs al
             LEFT JOIN admins a ON al.admin_id::text = a.id::text
             LEFT JOIN managers m ON al.admin_id::text = m.id::text
-            LEFT JOIN supermarkets s ON al.supermarket_id::text = s.id::text
+            LEFT JOIN vendors v ON al.vendor_id::text = v.id::text -- Changed supermarket_id to vendor_id
             LEFT JOIN branches b ON al.branch_id::text = b.id::text
         `;
+        // Note: Assuming audit_logs table column was also renamed from supermarket_id to vendor_id? 
+        // The user said "change the column supermarket_id to vendor_id in every table in the database".
+
         const params = [];
         const conditions = [];
 

@@ -106,7 +106,7 @@ router.get('/revenue-chart', authMiddleware, async (req, res) => {
     }
 });
 
-// GET /api/dashboard/top-supermarkets - Get top performing supermarkets
+// GET /api/dashboard/top-vendors - Get top performing vendors (formerly supermarkets)
 router.get('/top-supermarkets', authMiddleware, async (req, res) => {
     try {
         const result = await query(`
@@ -117,8 +117,8 @@ router.get('/top-supermarkets', authMiddleware, async (req, res) => {
         COUNT(DISTINCT b.id) as branch_count,
         COALESCE(SUM(o.total_price), 0) as total_revenue,
         COUNT(o.id) as order_count
-      FROM supermarkets s
-      LEFT JOIN branches b ON s.id = b.supermarket_id AND b.status ILIKE 'ACTIVE'
+      FROM vendors s
+      LEFT JOIN branches b ON s.id = b.vendor_id AND b.status ILIKE 'ACTIVE'
       LEFT JOIN orders o ON b.id = o.branch_id AND o.status NOT ILIKE 'CANCELLED'
       WHERE s.status ILIKE 'ACTIVE'
       GROUP BY s.id, s.name, s.logo
@@ -128,31 +128,31 @@ router.get('/top-supermarkets', authMiddleware, async (req, res) => {
 
         const totalRevenue = result.rows.reduce((sum, s) => sum + parseFloat(s.total_revenue), 0);
 
-        const supermarketsData = result.rows.map((supermarket, index) => {
-            const revenue = parseFloat(supermarket.total_revenue);
+        const vendorsData = result.rows.map((vendor, index) => {
+            const revenue = parseFloat(vendor.total_revenue);
             const impactPercentage = totalRevenue > 0 ? ((revenue / totalRevenue) * 100).toFixed(0) : '0';
 
             return {
-                name: supermarket.name,
+                name: vendor.name,
                 revenue: revenue.toFixed(2),
-                branches: parseInt(supermarket.branch_count),
+                branches: parseInt(vendor.branch_count),
                 growth: index === 0 ? '+14.2%' : index === 1 ? '+11.8%' : index === 2 ? '-2.4%' : '+22.1%', // Placeholder
                 impact: parseInt(impactPercentage),
-                orders: parseInt(supermarket.order_count),
+                orders: parseInt(vendor.order_count),
                 color: getColorForIndex(index)
             };
         });
 
         res.json({
             success: true,
-            data: supermarketsData
+            data: vendorsData
         });
 
     } catch (error) {
-        console.error('Top supermarkets error:', error);
+        console.error('Top vendors error:', error);
         res.status(500).json({
             success: false,
-            message: 'Failed to fetch top supermarkets'
+            message: 'Failed to fetch top vendors'
         });
     }
 });

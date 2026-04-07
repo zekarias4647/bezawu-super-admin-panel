@@ -11,6 +11,39 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
         rel="stylesheet">
     <style>
+        html,
+        body {
+            height: 100%;
+            font-size: 100%;
+            /* Reset to default — zoom on #root handles everything */
+        }
+
+        #root {
+            zoom: 0.72;
+            height: calc(100vh / 0.72);
+            width: calc(100vw / 0.72);
+            overflow: hidden;
+        }
+
+        /* Portal modals render as body > div (outside #root), bypassing zoom.
+           Apply the same zoom + compensate their dimensions so modals match the UI scale. */
+        body>div:not(#root) {
+            zoom: 0.72;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: calc(100vw / 0.72);
+            height: calc(100vh / 0.72);
+            z-index: 9999;
+            pointer-events: none;
+            /* Let children handle events */
+        }
+
+        body>div:not(#root)>* {
+            pointer-events: auto;
+            /* Re-enable on actual modal content */
+        }
+
         :root {
             /* Design Tokens */
             --bg-primary: #020617;

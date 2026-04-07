@@ -25,13 +25,27 @@ router.get('/config', authMiddleware, async (req, res) => {
 // POST /api/system/update - Update a system configuration key
 router.post('/update', authMiddleware, async (req, res) => {
     try {
-        const { name, value } = req.body;
+        const { id, name, value } = req.body;
 
-        if (!name || value === undefined) {
-            return res.status(400).json({ success: false, message: 'Name and value are required' });
+        if ((!id && !name) || value === undefined) {
+            return res.status(400).json({ success: false, message: 'ID or Name and value are required' });
         }
 
-        // Check if the key exists
+        if (id) {
+            // Update by ID
+            const result = await query(
+                'UPDATE system SET value = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
+                [value.toString(), id]
+            );
+
+            if (result.rowCount === 0) {
+                return res.status(404).json({ success: false, message: `System configuration with ID ${id} not found` });
+            }
+
+            return res.json({ success: true, message: `System configuration ID ${id} updated successfully` });
+        }
+
+        // Check if the key exists by name
         const checkResult = await query('SELECT name FROM system WHERE name = $1', [name]);
 
         if (checkResult.rows.length === 0) {

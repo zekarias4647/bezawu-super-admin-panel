@@ -87,8 +87,8 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
       const headers = { Authorization: `Bearer ${token}` };
 
       const [userRes, configRes] = await Promise.all([
-        axios.get('https://superadminapi.ristestate.com/api/auth/me', { headers }),
-        axios.get('https://superadminapi.ristestate.com/api/system/config', { headers })
+        axios.get('https://superapi.bezawcurbside.com/api/auth/me', { headers }),
+        axios.get('https://superapi.bezawcurbside.com/api/system/config', { headers })
       ]);
 
       if (userRes.data.success) {
@@ -98,8 +98,8 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
       if (configRes.data.success) {
         const cfg = configRes.data.data;
         if (cfg.commission_rate) setCommission(parseFloat(cfg.commission_rate));
-        if (cfg.APP_SHUTDOWN) setIsAppOffline(cfg.APP_SHUTDOWN === 'active');
-        if (cfg.GLOBAL_SHUTDOWN) setIsBranchesOffline(cfg.GLOBAL_SHUTDOWN === 'active');
+        if (cfg.APP_SHUTDOWN) setIsAppOffline(cfg.APP_SHUTDOWN === 'true' || cfg.APP_SHUTDOWN === 'active');
+        if (cfg.GLOBAL_SHUTDOWN) setIsBranchesOffline(cfg.GLOBAL_SHUTDOWN === 'true' || cfg.GLOBAL_SHUTDOWN === 'active');
       }
     } catch (error) {
       console.error('Error fetching system settings:', error);
@@ -114,14 +114,14 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
     setSelectedThemeId(theme);
   }, [theme]);
 
-  const updateConfig = async (name: string, value: any) => {
+  const updateConfig = async (name: string, value: any, id?: number) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.post('https://superadminapi.ristestate.com/api/system/update', { name, value }, {
+      await axios.post('https://superapi.bezawcurbside.com/api/system/update', { id, name, value }, {
         headers: { Authorization: `Bearer ${token}` }
       });
     } catch (error) {
-      console.error(`Error updating ${name}:`, error);
+      console.error(`Error updating ${name || id}:`, error);
     }
   };
 
@@ -132,7 +132,7 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
     }
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.post('https://superadminapi.ristestate.com/api/auth/change-password', {
+      const response = await axios.post('https://superapi.bezawcurbside.com/api/auth/change-password', {
         newPassword: newPass
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -163,7 +163,7 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
       <div className="flex justify-between items-end">
         <div>
           <h1 className={`text-4xl font-black font-poppins tracking-tighter uppercase ${isDark ? 'text-white' : 'text-gray-950'}`}>System Configuration</h1>
-          
+
         </div>
         <div className="flex gap-4">
           <div className="px-6 py-3 glass-card flex items-center gap-4 text-[var(--accent)]">
@@ -251,7 +251,7 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
                 onToggle={() => {
                   const newState = !isAppOffline;
                   setIsAppOffline(newState);
-                  updateConfig('APP_SHUTDOWN', newState ? 'active' : 'inactive');
+                  updateConfig('APP_SHUTDOWN', newState.toString(), 2);
                 }}
                 isDark={isDark}
               />

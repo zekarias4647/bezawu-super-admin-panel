@@ -15,6 +15,7 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 const authRoutes = require('./auth/auth');
@@ -24,9 +25,10 @@ app.use('/api/auth', authRoutes);
 const dashboardRoutes = require('./routes/dashboard');
 app.use('/api/dashboard', dashboardRoutes);
 
-// Supermarket routes
-const supermarketRoutes = require('./routes/supermarkets');
-app.use('/api/supermarkets', supermarketRoutes);
+// Vendor routes (formerly Supermarkets)
+const vendorRoutes = require('./routes/vendors');
+app.use('/api/supermarkets', vendorRoutes); // Keep for compatibility
+app.use('/api/vendors', vendorRoutes);      // New standard
 
 // Branch routes
 const branchRoutes = require('./routes/branches');
@@ -48,6 +50,10 @@ app.use('/api/users', userRoutes);
 const feedbackRoutes = require('./routes/feedback');
 app.use('/api/feedback', feedbackRoutes);
 
+// App Feedback routes
+const appFeedbackRoutes = require('./routes/app-feedback');
+app.use('/api/app-feedback', appFeedbackRoutes);
+
 // Audit logs routes
 const auditRoutes = require('./routes/audit-logs');
 app.use('/api/audit-logs', auditRoutes);
@@ -55,6 +61,16 @@ app.use('/api/audit-logs', auditRoutes);
 // System routes
 const systemRoutes = require('./routes/system');
 app.use('/api/system', systemRoutes);
+
+// Business Types routes
+const businessTypesRoutes = require('./routes/business-types');
+app.use('/api/business-types', businessTypesRoutes);
+
+// Ads and Upload routes
+const adsRoutes = require('./routes/ads');
+const uploadRoutes = require('./utils/upload');
+app.use('/api/ads', adsRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

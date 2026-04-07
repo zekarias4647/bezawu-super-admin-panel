@@ -3,19 +3,20 @@ const router = express.Router();
 const { query } = require('../connection/db');
 const authMiddleware = require('../middleware/auth');
 
-// GET /api/branches - Get all branches with parent supermarket and stats
+// GET /api/branches - Get all branches with parent vendor and stats
 router.get('/', authMiddleware, async (req, res) => {
     try {
         const result = await query(`
             SELECT 
                 b.*,
-                s.name as supermarket_name,
+                v.name as vendor_name,
+                v.name as supermarket_name, -- Keep legacy alias
                 COALESCE(SUM(o.total_price), 0) as total_revenue,
                 COUNT(DISTINCT o.customer_id) as total_customers
             FROM branches b
-            LEFT JOIN supermarkets s ON b.supermarket_id = s.id
+            LEFT JOIN vendors v ON b.vendor_id = v.id
             LEFT JOIN orders o ON b.id = o.branch_id AND o.status NOT ILIKE 'CANCELLED'
-            GROUP BY b.id, s.name
+            GROUP BY b.id, v.name
             ORDER BY b.created_at DESC
         `);
 
@@ -28,12 +29,14 @@ router.get('/', authMiddleware, async (req, res) => {
 
             return {
                 ...branch,
+                supermarket_id: branch.vendor_id, // Legacy compatibility
                 total_revenue: parseFloat(branch.total_revenue),
                 total_customers: parseInt(branch.total_customers),
                 product_count: parseInt(inventoryResult.rows[0].product_count),
                 manager: managerResult.rows[0] || null,
-                // The UI expects an array of products for the detail view
-                products: []
+                products: [],
+                opening_hours: branch.opening_hours,
+                closing_hours: branch.closing_hours
             };
         }));
 
