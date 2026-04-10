@@ -18,7 +18,7 @@ const Ads: React.FC<AdsProps> = ({ isDarkMode }) => {
         try {
             setLoading(true);
             const token = localStorage.getItem('authToken');
-            const response = await fetch('https://superapi.bezawcurbside.com/api/ads/ads-get', {
+            const response = await fetch('/api/ads/ads-get', {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (response.ok) {
@@ -41,7 +41,7 @@ const Ads: React.FC<AdsProps> = ({ isDarkMode }) => {
         if (!window.confirm('Are you sure you want to delete this ad?')) return;
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`https://superapi.bezawcurbside.com/api/ads/${id}`, {
+            const response = await fetch(`/api/ads/${id}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -58,7 +58,7 @@ const Ads: React.FC<AdsProps> = ({ isDarkMode }) => {
         e.stopPropagation();
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`https://superapi.bezawcurbside.com/api/ads/${id}/toggle`, {
+            const response = await fetch(`/api/ads/${id}/toggle`, {
                 method: 'PATCH',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

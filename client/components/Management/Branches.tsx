@@ -63,7 +63,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('authToken');
-      const response = await axios.get('https://superapi.bezawcurbside.com/api/branches', {
+      const response = await axios.get('/api/branches', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -83,7 +83,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
   const fetchBranchProducts = async (branchId: string) => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.get(`https://superapi.bezawcurbside.com/api/branches/${branchId}/products`, {
+      const response = await axios.get(`/api/branches/${branchId}/products`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -104,7 +104,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
   const toggleBusyMode = async (id: string, currentBusy: boolean) => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.patch(`https://superapi.bezawcurbside.com/api/branches/${id}/busy`,
+      const response = await axios.patch(`/api/branches/${id}/busy`,
         { is_busy: !currentBusy },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -123,7 +123,7 @@ const Branches: React.FC<BranchesProps> = ({ theme = 'dark' }) => {
     try {
       const newStatus = currentStatus.toUpperCase() === 'ACTIVE' ? 'CLOSED' : 'ACTIVE';
       const token = localStorage.getItem('authToken');
-      const response = await axios.patch(`https://superapi.bezawcurbside.com/api/branches/${id}/status`,
+      const response = await axios.patch(`/api/branches/${id}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

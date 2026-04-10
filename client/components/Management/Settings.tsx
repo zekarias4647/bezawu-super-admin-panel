@@ -87,8 +87,8 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
       const headers = { Authorization: `Bearer ${token}` };
 
       const [userRes, configRes] = await Promise.all([
-        axios.get('https://superapi.bezawcurbside.com/api/auth/me', { headers }),
-        axios.get('https://superapi.bezawcurbside.com/api/system/config', { headers })
+        axios.get('/api/auth/me', { headers }),
+        axios.get('/api/system/config', { headers })
       ]);
 
       if (userRes.data.success) {
@@ -117,7 +117,7 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
   const updateConfig = async (name: string, value: any, id?: number) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axios.post('https://superapi.bezawcurbside.com/api/system/update', { id, name, value }, {
+      await axios.post('/api/system/update', { id, name, value }, {
         headers: { Authorization: `Bearer ${token}` }
       });
     } catch (error) {
@@ -132,7 +132,7 @@ const Settings: React.FC<SettingsProps> = ({ theme = 'bezaw-terminal', mode = 'd
     }
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.post('https://superapi.bezawcurbside.com/api/auth/change-password', {
+      const response = await axios.post('/api/auth/change-password', {
         newPassword: newPass
       }, {
         headers: { Authorization: `Bearer ${token}` }

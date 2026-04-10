@@ -35,7 +35,7 @@ const Network: React.FC<{ theme?: 'light' | 'dark' }> = ({ theme = 'dark' }) => 
   const fetchTelemetry = async () => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.get('https://superapi.bezawcurbside.com/api/network/telemetry', {
+      const response = await axios.get('/api/network/telemetry', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

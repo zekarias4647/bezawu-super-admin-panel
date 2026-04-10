@@ -29,7 +29,7 @@ const AuditLogs: React.FC<{ theme?: 'light' | 'dark' }> = ({ theme = 'dark' }) =
     try {
       setLoading(true);
       const token = localStorage.getItem('authToken');
-      const response = await axios.get(`https://superapi.bezawcurbside.com/api/audit-logs?search=${searchTerm}&severity=${filter}`, {
+      const response = await axios.get(`/api/audit-logs?search=${searchTerm}&severity=${filter}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

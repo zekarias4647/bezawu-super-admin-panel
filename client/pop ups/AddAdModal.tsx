@@ -40,7 +40,7 @@ const AddAdModal: React.FC<AddAdModalProps> = ({ isOpen, onClose, onSuccess, isD
 
             const token = localStorage.getItem('authToken');
 
-            const uploadRes = await fetch('https://superapi.bezawcurbside.com/api/upload/image', {
+            const uploadRes = await fetch('/api/upload/image', {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
@@ -51,7 +51,7 @@ const AddAdModal: React.FC<AddAdModalProps> = ({ isOpen, onClose, onSuccess, isD
             const mediaUrl = uploadData.imageUrl; // The endpoint returns { imageUrl: ... } even for relative paths
 
             // 2. Create Ad
-            const adRes = await fetch('https://superapi.bezawcurbside.com/api/ads/ads-post', {
+            const adRes = await fetch('/api/ads/ads-post', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

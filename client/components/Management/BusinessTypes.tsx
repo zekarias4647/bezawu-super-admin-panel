@@ -44,7 +44,7 @@ const BusinessTypes: React.FC<BusinessTypesProps> = ({ theme = 'dark' }) => {
         try {
             setLoading(true);
             const token = localStorage.getItem('authToken');
-            const response = await axios.get('https://superapi.bezawcurbside.com/api/business-types', {
+            const response = await axios.get('/api/business-types', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (response.data.success) {
@@ -150,11 +150,11 @@ const BusinessTypes: React.FC<BusinessTypesProps> = ({ theme = 'dark' }) => {
             };
 
             if (editingType) {
-                await axios.put(`https://superapi.bezawcurbside.com/api/business-types/${editingType.id}`, payload, {
+                await axios.put(`/api/business-types/${editingType.id}`, payload, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             } else {
-                await axios.post('https://superapi.bezawcurbside.com/api/business-types', payload, {
+                await axios.post('/api/business-types', payload, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
             }
@@ -172,7 +172,7 @@ const BusinessTypes: React.FC<BusinessTypesProps> = ({ theme = 'dark' }) => {
 
         try {
             const token = localStorage.getItem('authToken');
-            await axios.delete(`https://superapi.bezawcurbside.com/api/business-types/${id}`, {
+            await axios.delete(`/api/business-types/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchBusinessTypes();

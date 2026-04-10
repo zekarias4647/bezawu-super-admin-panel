@@ -59,7 +59,7 @@ const Users: React.FC<UsersProps> = ({ theme = 'dark' }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('authToken');
-      const response = await axios.get(`https://superapi.bezawcurbside.com/api/users?search=${searchTerm}`, {
+      const response = await axios.get(`/api/users?search=${searchTerm}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -75,7 +75,7 @@ const Users: React.FC<UsersProps> = ({ theme = 'dark' }) => {
   const handleViewUser = async (user: Customer) => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.get(`https://superapi.bezawcurbside.com/api/users/${user.id}`, {
+      const response = await axios.get(`/api/users/${user.id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {

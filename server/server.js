@@ -9,7 +9,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: ['https://superadmin.ristestate.com', 'http://localhost:5173', 'http://localhost:3000'],
+    origin: ['https://superadmin.bezawcurbside.com', 'http://localhost:5173', 'http://localhost:3000', 'http://localhost:3001'],
     credentials: true
 }));
 app.use(bodyParser.json());

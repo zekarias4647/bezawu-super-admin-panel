@@ -24,7 +24,7 @@ const ForgotPassword: React.FC<Props> = ({ onNext, onBack }) => {
     setSuccess(false);
 
     try {
-      const response = await fetch('https://superapi.bezawcurbside.com/api/auth/forgot-password', {
+      const response = await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

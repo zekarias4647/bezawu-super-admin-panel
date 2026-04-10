@@ -72,7 +72,7 @@ const Supermarkets: React.FC<SupermarketsProps> = ({ theme = 'dark' }) => {
     try {
       setLoading(true);
       const token = localStorage.getItem('authToken');
-      const response = await axios.get('https://superapi.bezawcurbside.com/api/supermarkets', {
+      const response = await axios.get('/api/supermarkets', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -92,7 +92,7 @@ const Supermarkets: React.FC<SupermarketsProps> = ({ theme = 'dark' }) => {
   const handleStatusUpdate = async (id: string, newStatus: string) => {
     try {
       const token = localStorage.getItem('authToken');
-      const response = await axios.patch(`https://superapi.bezawcurbside.com/api/supermarkets/${id}/status`,
+      const response = await axios.patch(`/api/supermarkets/${id}/status`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

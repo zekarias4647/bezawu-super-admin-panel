@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ onLogout, theme, mode, onModeToggle }) 
           return;
         }
 
-        const response = await axios.get('https://superapi.bezawcurbside.com/api/auth/me', {
+        const response = await axios.get('/api/auth/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
